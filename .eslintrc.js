@@ -20,6 +20,8 @@ module.exports = {
     semi: ['error', 'never'],
     'vue/html-indent': ['error', 2],
     'vue/max-attributes-per-line': 'off',
+    'indent-legacy': ['error', 2, { SwitchCase: 1 }],
+    'object-curly-spacing': ['error', 'always'],
   },
   parserOptions: {
     parser: 'babel-eslint',

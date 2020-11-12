@@ -1,0 +1,24 @@
+.log-box {
+  margin-top: 30px;
+  text-align: center;
+  padding: 10px;
+  border: 1px solid #ccc;
+  box-shadow: 0px 3px 6px #ccc;
+
+  ul {
+    list-style: none;
+    font-weight: bold;
+    text-transform: uppercase;
+    li {
+      margin: 5px;
+      &.player-turn {
+        color: blue;
+        background-color: #e4e8ff;
+      }
+      &.monster-turn {
+        color: red;
+        background-color: #ffc0c1;
+      }
+    }
+  }
+}
