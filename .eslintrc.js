@@ -22,6 +22,8 @@ module.exports = {
     'vue/max-attributes-per-line': 'off',
     'indent-legacy': ['error', 2, { SwitchCase: 1 }],
     'object-curly-spacing': ['error', 'always'],
+    'array-bracket-newline': ['error', { multiline: true, minItems: 2 }],
+    'array-element-newline': ['error', { multiline: true, minItems: 2 }],
   },
   parserOptions: {
     parser: 'babel-eslint',

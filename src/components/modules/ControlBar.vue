@@ -1,108 +1,124 @@
 <template>
-  <section class="control-bar">
+  <section class="control-bar mt-8">
     <template v-if="!isGameActive">
       <div class="controls">
-        <button id="start-game" @click="startGame">START NEW GAME</button>
+        <div class="controls flex lg:flex-shrink-0 space-x-6 justify-center">
+          <div class="inline-flex rounded-md shadow">
+            <button
+              id="start-game"
+              class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+              @click="startGame">
+              START NEW GAME
+            </button>
+          </div>
+        </div>
       </div>
     </template>
     <template v-else>
-      <div class="controls">
-        {{ isFighting }}
-        <button :disabled="isFighting" id="attack" @click="performAbility('attack', 'normal')">ATTACK</button>
-        <button :disabled="isFighting" id="special-attack" @click="performAbility('attack', 'special')">
-          SPECIAL ATTACK
-        </button>
-        <button :disabled="isFighting" id="heal" @click="performAbility('heal')">HEAL</button>
-        <button id="give-up" @click="giveUp">GIVE UP</button>
+      <div class="controls flex lg:flex-shrink-0 space-x-6 justify-center">
+        <div class="inline-flex rounded-md shadow">
+          <button
+            :disabled="isFighting"
+            id="attack"
+            class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+            :class="{'cursor-not-allowed': isFighting}"
+            @click="onPerformAbility('attack', 'normal')">
+            ATTACK
+          </button>
+        </div>
+        <div class="inline-flex rounded-md shadow">
+          <button
+            :disabled="isFighting"
+            id="special-attack"
+            class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-orange-600 hover:bg-orange-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+            :class="{'cursor-not-allowed': isFighting}"
+            @click="onPerformAbility('attack', 'special')">
+            SPECIAL ATTACK
+          </button>
+        </div>
+        <div class="inline-flex rounded-md shadow">
+          <button
+            :disabled="isFighting"
+            id="heal"
+            class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+            :class="{'cursor-not-allowed': isFighting}"
+            @click="onPerformAbility('heal')">
+            HEAL
+          </button>
+        </div>
+        <div class="inline-flex rounded-md shadow">
+          <button
+            id="give-up"
+            class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-blue-300 hover:bg-blue-200 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+            @click="giveUp">
+            GIVE UP
+          </button>
+        </div>
       </div>
     </template>
   </section>
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
+import { mapActions, mapMutations, mapState } from 'vuex'
 
 export default {
   name: 'ControlBar',
+  computed: {
+    ...mapState('game', [
+      'human',
+      'computer',
+      'isGameActive',
+      'isFighting',
+    ]),
+  },
   data: () => ({
-    isFighting: false,
-    isGameActive: false,
-    human: {
-      health: 100,
-    },
-    computer: {
-      health: 100,
-    },
+
   }),
   methods: {
-    ...mapMutations('logs', ['ADD_LOG', 'CLEAR_LOGS']),
-    startGame() {
-      // TODO: use human and computer from store
-      this.human.health = 100
-      this.computer.health = 100
-      this.isGameActive = true
-      this.isFighting = false
-      this.CLEAR_LOGS()
-    },
-    giveUp() {
-      this.isGameActive = false
-    },
-    performAbility(ability, type = null) {
-      this.isFighting = true
-      let amount
+    ...mapMutations('logs', [
+      'ADD_LOG',
+      'CLEAR_LOGS',
+    ]),
+    ...mapActions('game', [
+      'performAbility',
+      'startGame',
+      'giveUp',
+      'startFight',
+      'endFight',
+    ]),
+    ...mapMutations('game', ['SET_WINNER']),
+    async onPerformAbility(ability, type = null) {
+      this.startFight()
+      // TODO: random player start
+      const amount = await this.performAbility({ player: 'human', ability, type })
+
       if(ability === 'attack') {
-        amount = this.attack(this.computer, type)
         this.addAttackToLog('human','computer', type, amount)
       } else if(ability === 'heal') {
-        amount = this.heal(this.human)
         this.addHealToLog('human', amount)
       }
 
       if(this.checkWinner() === 'human') {
-        this.isFighting = false
-        this.setWinner('human')
-        this.isGameActive = false
+        this.SET_WINNER('human')
         return
       }
 
       const self = this
       setTimeout(() => {
-        self.attackHuman(type)
+        self.attackHuman(ability, type || 'normal')
       }, 1000)
     },
-    attackHuman(type) {
+    async attackHuman(ability, type) {
       // TODO: add random ability to computer
-      this.isFighting = true
-      let amount = this.attack(this.human, type)
+      const amount = await this.performAbility({ player: 'computer', ability: ability !== 'heal' && ability, type })
 
       this.addAttackToLog('computer', 'human', type, amount)
 
-      this.isFighting = false
-
       if(this.checkWinner() === 'computer') {
-        this.setWinner('computer')
-        this.isGameActive = false
-        return
+        this.SET_WINNER('computer')
       }
-    },
-    attack(player, type){
-      let amount
-
-      if(type === 'normal') {
-        player.health -= amount = this.calculateDamage(3,6)
-      } else if(type === 'special') {
-        player.health -= amount = this.calculateDamage(5, 10)
-      }
-
-      player.health = player.health <= 0 ? 0 : player.health
-
-      return amount
-    },
-    heal(player) {
-      let amount
-      player.health += amount = this.calculateDamage(3, 10)
-      player.health = player.health > 100 ? 100 : player.health
-      return amount
+      this.endFight()
     },
     checkWinner() {
       if(this.computer.health <= 0) {
@@ -111,13 +127,6 @@ export default {
         return 'computer'
       }
       return false
-    },
-    setWinner(winner) {
-      // console.log(winner)
-      return winner
-    },
-    calculateDamage(min, max) {
-      return Math.floor(Math.random() * max) + min
     },
     addAttackToLog(sender, receiver, type, amount) {
       this.ADD_LOG({
