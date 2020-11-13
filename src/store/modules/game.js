@@ -42,7 +42,7 @@ const actions = {
   attack({ commit }, { player, type }) {
     let amount = 0
     if(type === 'normal') {
-      amount = calculateValue(3,6)
+      amount = calculateValue(3, 6)
     } else if(type === 'special') {
       amount = calculateValue(5, 10)
     }
@@ -50,7 +50,7 @@ const actions = {
     return amount
   },
   heal({ commit }, { player }) {
-    const amount = calculateValue(3, 10)
+    const amount = calculateValue(3, 7)
     commit('HEAL_PLAYER', { player, amount })
     return amount
   },

@@ -1,6 +1,6 @@
 <template>
   <section class="game-page container mx-auto">
-    <div class="flex">
+    <div class="flex mt-4">
       <div class="flex-1 text-gray-700 text-center bg-gray-400 px-4 py-2 m-2">
         <h2 class="mb-2 text-2xl font-bold">You</h2>
         <health-bar :health="human.health"></health-bar>

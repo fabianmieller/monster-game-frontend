@@ -1,26 +1,24 @@
 <template>
   <section class="control-bar mt-8">
     <template v-if="!isGameActive">
-      <div class="controls">
-        <div class="controls flex lg:flex-shrink-0 space-x-6 justify-center">
-          <div class="inline-flex rounded-md shadow">
-            <button
-              id="start-game"
-              class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
-              @click="startGame">
-              START NEW GAME
-            </button>
-          </div>
+      <div class="controls grid grid-cols-1 md:grid-cols-6 justify-center">
+        <div class="inline-flex md:col-start-2 md:col-span-4 rounded-md shadow justify-center">
+          <button
+            id="start-game"
+            class="inline-flex flex-grow items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+            @click="startGame">
+            START NEW GAME
+          </button>
         </div>
       </div>
     </template>
     <template v-else>
-      <div class="controls flex lg:flex-shrink-0 space-x-6 justify-center">
+      <div class="controls flex grid grid-cols-1 md:grid-cols-4 space-y-4 md:space-y-0 md:space-x-6 lg:space-x-8 xl:space-x-12 justify-center">
         <div class="inline-flex rounded-md shadow">
           <button
             :disabled="isFighting"
             id="attack"
-            class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+            class="inline-flex flex-grow items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-yellow-600 hover:bg-yellow-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
             :class="{'cursor-not-allowed': isFighting}"
             @click="onPerformAbility('attack', 'normal')">
             ATTACK
@@ -30,7 +28,7 @@
           <button
             :disabled="isFighting"
             id="special-attack"
-            class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-orange-600 hover:bg-orange-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+            class="inline-flex flex-grow items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-orange-600 hover:bg-orange-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
             :class="{'cursor-not-allowed': isFighting}"
             @click="onPerformAbility('attack', 'special')">
             SPECIAL ATTACK
@@ -40,7 +38,7 @@
           <button
             :disabled="isFighting"
             id="heal"
-            class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+            class="inline-flex flex-grow items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-green-600 hover:bg-green-500 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
             :class="{'cursor-not-allowed': isFighting}"
             @click="onPerformAbility('heal')">
             HEAL
@@ -49,7 +47,7 @@
         <div class="inline-flex rounded-md shadow">
           <button
             id="give-up"
-            class="inline-flex items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-blue-300 hover:bg-blue-200 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
+            class="inline-flex flex-grow items-center justify-center px-5 py-3 border border-transparent text-base leading-6 font-medium rounded-md text-white bg-blue-300 hover:bg-blue-200 focus:outline-none focus:shadow-outline transition duration-150 ease-in-out"
             @click="giveUp">
             GIVE UP
           </button>
@@ -101,6 +99,9 @@ export default {
 
       if(this.checkWinner() === 'human') {
         this.SET_WINNER('human')
+        this.ADD_LOG({
+          winner: 'human',
+        })
         return
       }
 
@@ -117,6 +118,9 @@ export default {
 
       if(this.checkWinner() === 'computer') {
         this.SET_WINNER('computer')
+        this.ADD_LOG({
+          winner: 'computer',
+        })
       }
       this.endFight()
     },

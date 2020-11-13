@@ -8,6 +8,9 @@
         <template v-if="log.ability === 'heal'">
           {{ log.sender }} heals for {{ log.amount }}
         </template>
+        <template v-if="log.winner">
+          {{ log.winner }} is the winner
+        </template>
       </li>
     </ul>
   </section>
