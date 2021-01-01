@@ -25,6 +25,7 @@ module.exports = {
     'object-curly-spacing': ['error', 'always'],
     'array-bracket-newline': ['error', { multiline: true, minItems: 2 }],
     'array-element-newline': ['error', { multiline: true, minItems: 2 }],
+    'no-unused-vars': process.env.NODE_ENV === 'production' ? 'error' : 'warn',
   },
   parserOptions: {
     parser: 'babel-eslint',

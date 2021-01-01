@@ -25,6 +25,7 @@
             <div class="ml-3 relative">
               <div>
                 <button @click="showProfileDropdown = !showProfileDropdown" class="max-w-xs flex items-center text-sm rounded-full text-white focus:outline-none focus:shadow-solid" id="user-menu" aria-label="User menu" aria-haspopup="true">
+                  <!-- TODO: use avatar_url -->
                   <img class="h-8 w-8 rounded-full" src="https://fabianmieller.de/wp-content/uploads/2019/05/fabian-mieller.jpg" alt="">
                 </button>
               </div>
@@ -42,11 +43,16 @@
                   class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg"
                 >
                   <div class="py-1 rounded-md bg-white shadow-xs" role="menu" aria-orientation="vertical" aria-labelledby="user-menu">
+                    <!-- <template v-if="..."> -->
+                    <router-link :to="{ name: 'login' }" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" active-class="" role="menuitem">Login</router-link>
+                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Register</a>
+                    <!-- </template> -->
+                    <!-- TODO: show items when user is logged in -->
+                    <!-- <template v-else> -->
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Your Profile</a>
-
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Settings</a>
-
                     <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem">Sign out</a>
+                    <!-- </template> -->
                   </div>
                 </div>
               </transition>
@@ -75,8 +81,10 @@
         <router-link :to="{ name: 'game' }" class="block px-3 py-2 font-medium text-base text-gray-300 hover:text-white hover:bg-gray-700 rounded-md font-medium focus:outline-none focus:text-white focus:bg-gray-700">Game</router-link>
       </div>
       <div class="pt-4 pb-3 border-t border-gray-700">
+        <!-- TODO: link to profile -->
         <div class="flex items-center px-5 space-x-3">
           <div class="flex-shrink-0">
+            <!-- TODO: use avatar_url -->
             <img class="h-10 w-10 rounded-full" src="https://fabianmieller.de/wp-content/uploads/2019/05/fabian-mieller.jpg" alt="">
           </div>
           <div class="space-y-1">
@@ -85,9 +93,15 @@
           </div>
         </div>
         <div class="mt-3 px-2 space-y-1">
+          <!-- <template v-if="..."> -->
+          <router-link :to="{ name: 'login' }" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Login</router-link>
+          <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Register</a>
+          <!-- </template> -->
+          <!-- TODO: show items when user is logged in -->
+          <!-- <template v-else> -->
           <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Settings</a>
-
           <a href="#" class="block px-3 py-2 rounded-md text-base font-medium text-gray-400 hover:text-white hover:bg-gray-700 focus:outline-none focus:text-white focus:bg-gray-700">Sign out</a>
+          <!-- </template> -->
         </div>
       </div>
     </div>
